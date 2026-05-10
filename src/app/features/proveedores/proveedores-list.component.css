@@ -1,0 +1,91 @@
+:host {
+  display: block;
+}
+
+.header-icon {
+  width: 44px;
+  height: 44px;
+  background: white;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary);
+  border: 1px solid var(--border);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+}
+.header-icon svg { width: 22px; height: 22px; }
+
+.header-info h1 {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: var(--text-pri);
+  letter-spacing: -0.02em;
+  margin: 0 0 0.25rem;
+}
+
+.header-subtitle { color: var(--text-sec); font-weight: 500; margin: 0; }
+
+.code-pill {
+  font-family: monospace;
+  font-size: 0.75rem;
+  font-weight: 800;
+  padding: 0.35rem 0.65rem;
+  background: #f1f5f9;
+  color: var(--primary);
+  border-radius: 6px;
+}
+
+.provider-info { display: flex; flex-direction: column; gap: 0.2rem; }
+.p-name { font-weight: 700; color: var(--text-pri); font-size: 0.95rem; }
+.p-desc { font-size: 0.8rem; color: var(--text-sec); font-weight: 500; }
+
+.contact-info { display: flex; flex-direction: column; }
+.c-email { font-size: 0.85rem; font-weight: 600; color: var(--text-pri); }
+.c-phone { font-size: 0.75rem; font-weight: 700; color: var(--text-sec); }
+
+.address-text {
+  font-size: 0.85rem;
+  color: var(--text-sec);
+  max-width: 200px;
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.status-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: #ef4444;
+  background: #fef2f2;
+  padding: 0.35rem 0.75rem;
+  border-radius: 99px;
+}
+
+.status-indicator.active { color: #10b981; background: #ecfdf5; }
+.status-indicator::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+
+.actions-group { display: flex; gap: 0.5rem; justify-content: flex-end; }
+
+/* Empty View */
+.empty-notif { padding: 4rem; text-align: center; }
+.empty-art { color: var(--border); margin-bottom: 1.5rem; }
+.empty-art svg { width: 60px; height: 60px; }
+.empty-notif p { font-weight: 600; color: var(--text-sec); }
+
+.loading-bar-wrapper { position: absolute; top: 0; left: 0; right: 0; height: 3px; overflow: hidden; }
+.loading-bar {
+  height: 100%;
+  background: var(--primary);
+  width: 30%;
+  animation: loadingSlide 1.5s infinite ease-in-out;
+}
+@keyframes loadingSlide { 0% { transform: translateX(-100%); } 100% { transform: translateX(400%); } }

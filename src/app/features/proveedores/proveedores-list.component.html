@@ -1,0 +1,130 @@
+<div class="proveedores-container">
+  <header class="page-header">
+    <div class="header-info">
+      <h1>
+        <div class="header-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>
+          </svg>
+        </div>
+        Socios Comerciales
+      </h1>
+      <p class="header-subtitle">Gestión de proveedores y suministros</p>
+    </div>
+    <a routerLink="/proveedores/crear" class="btn-primary-premium">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+        <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+      </svg>
+      Nuevo Proveedor
+    </a>
+  </header>
+
+  <app-alert
+    [type]="alertType()"
+    [title]="alertTitle()"
+    [message]="alertMessage()"
+    [visible]="showAlert()"
+    [closable]="true"
+    (closed)="showAlert.set(false)"
+  ></app-alert>
+
+  <section class="content-card">
+    <div class="table-controls">
+      <div class="search-box">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+        </svg>
+        <input
+          type="text"
+          [ngModel]="searchTerm()"
+          (ngModelChange)="searchTerm.set($event)"
+          placeholder="Filtrar por Razón Social, Código o Email..."
+          class="form-control"
+        />
+      </div>
+      <div class="results-badge">
+        {{ filteredProveedores().length }} Proveedores
+      </div>
+    </div>
+
+    <div class="premium-table-wrapper">
+      <table class="premium-table">
+        <thead>
+          <tr>
+            <th>Identificador</th>
+            <th>Proveedor / Empresa</th>
+            <th>Contacto</th>
+            <th>Ubicación</th>
+            <th>Estado</th>
+            <th class="text-center">Operaciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let p of filteredProveedores(); trackBy: trackByCodigo">
+            <td class="col-code">
+              <span class="code-pill">{{ p.codigo }}</span>
+            </td>
+            <td class="col-main">
+              <div class="provider-info">
+                <span class="p-name">{{ p.nombre }}</span>
+                <span class="p-desc">{{ p.descripcion }}</span>
+              </div>
+            </td>
+            <td>
+              <div class="contact-info">
+                <span class="c-email">{{ p.email }}</span>
+                <span class="c-phone">{{ p.telefono }}</span>
+              </div>
+            </td>
+            <td>
+              <span class="address-text" [title]="p.direccion">{{ p.direccion }}</span>
+            </td>
+            <td>
+              <span class="status-indicator" [class.active]="p.estado">
+                {{ p.estado ? 'Vigente' : 'Inactivo' }}
+              </span>
+            </td>
+            <td class="col-actions">
+              <div class="actions-group">
+                <a [routerLink]="['/proveedores/editar', p.codigo]" class="action-btn edit" title="Editar">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                  </svg>
+                </a>
+                <button (click)="deleteProveedor(p.codigo)" class="action-btn delete" title="Eliminar">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                  </svg>
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- Empty State -->
+      <div *ngIf="filteredProveedores().length === 0 && !isLoading()" class="empty-notif">
+        <div class="empty-art">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+            <rect x="2" y="7" width="20" height="15" rx="2" ry="2"/><polyline points="17 2 12 7 7 2"/>
+          </svg>
+        </div>
+        <p>No se encontraron socios comerciales registrados.</p>
+      </div>
+
+      <!-- Loading State -->
+      <div *ngIf="isLoading()" class="loading-bar-wrapper">
+        <div class="loading-bar"></div>
+      </div>
+    </div>
+  </section>
+
+  <app-confirm-dialog
+    [visible]="showConfirmDelete()"
+    message="¿Está seguro de eliminar este proveedor? Esta acción removerá su acceso de los registros operativos."
+    confirmText="Confirmar Baja"
+    (confirmed)="confirmDelete()"
+    (cancelled)="showConfirmDelete.set(false)"
+  ></app-confirm-dialog>
+</div>

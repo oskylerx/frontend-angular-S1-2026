@@ -1,0 +1,144 @@
+<div class="form-container">
+  <header class="form-header">
+    <a routerLink="/proveedores" class="btn-back">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/>
+      </svg>
+      Regresar al listado
+    </a>
+    <div class="header-title">
+      <h1>{{ isEditing() ? 'Ficha de Proveedor' : 'Nuevo Socio Comercial' }}</h1>
+      <p>Configure los datos de contacto y facturación del proveedor.</p>
+    </div>
+  </header>
+
+  <app-alert
+    [type]="alertType()"
+    [title]="alertTitle()"
+    [message]="alertMessage()"
+    [visible]="showAlert()"
+    [closable]="true"
+    (closed)="showAlert.set(false)"
+  ></app-alert>
+
+  <div class="form-card">
+    <form [formGroup]="proveedorForm" (ngSubmit)="onSubmit()">
+      <div class="section-label">Identificación Mercantil</div>
+      
+      <div class="form-group mb-2">
+        <label>Código de Registro</label>
+        <div class="input-with-magic">
+          <div class="input-wrapper">
+            <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+            </svg>
+            <input
+              type="text"
+              formControlName="codigo"
+              placeholder="Ej: PROV-001"
+              class="form-control"
+              [class.error]="isFieldInvalid('codigo')"
+              [readonly]="isEditing()"
+            />
+          </div>
+          <button 
+            type="button" 
+            *ngIf="!isEditing()"
+            (click)="generateMagicCode()" 
+            class="btn-magic" 
+            title="Generar código sugerido"
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M15 14l-2 2-3-3-3 3"/>
+              <path d="M21 21l-6-6"/>
+              <path d="M12 3v12"/>
+              <path d="M8 7l4-4 4 4"/>
+            </svg>
+            Auto-Generar
+          </button>
+        </div>
+        <span class="error-msg" *ngIf="isFieldInvalid('codigo')">El código es obligatorio para el registro</span>
+      </div>
+
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Nombre / Razón Social</label>
+          <input
+            type="text"
+            formControlName="nombre"
+            placeholder="Nombre de la empresa"
+            class="form-control"
+            [class.error]="isFieldInvalid('nombre')"
+          />
+        </div>
+
+        <div class="form-group">
+          <label>Correo Electrónico</label>
+          <input
+            type="email"
+            formControlName="email"
+            placeholder="logistica@empresa.com"
+            class="form-control"
+            [class.error]="isFieldInvalid('email')"
+          />
+        </div>
+
+        <div class="form-group">
+          <label>Teléfono de Contacto</label>
+          <input
+            type="text"
+            formControlName="telefono"
+            placeholder="+591 ..."
+            class="form-control"
+            [class.error]="isFieldInvalid('telefono')"
+          />
+        </div>
+
+        <div class="form-group">
+          <label>Dirección Física</label>
+          <input
+            type="text"
+            formControlName="direccion"
+            placeholder="Calle, Edificio, Ciudad"
+            class="form-control"
+            [class.error]="isFieldInvalid('direccion')"
+          />
+        </div>
+      </div>
+
+      <div class="section-label mt-2">Detalles Adicionales</div>
+
+      <div class="form-group">
+        <label>Descripción de Suministros</label>
+        <textarea
+          formControlName="descripcion"
+          placeholder="Escriba los productos o servicios principales que ofrece este proveedor..."
+          class="form-control textarea"
+          rows="3"
+        ></textarea>
+      </div>
+
+      <div class="form-group flex-row mt-1">
+        <label class="toggle">
+          <input type="checkbox" formControlName="estado" />
+          <span class="toggle-slider"></span>
+          <span class="toggle-label">{{ proveedorForm.get('estado')?.value ? 'Proveedor Vigente' : 'Proveedor En Pausa' }}</span>
+        </label>
+      </div>
+
+      <div class="form-footer">
+        <button type="button" class="btn-cancel" (click)="cancel()">Ignorar Cambios</button>
+        <button
+          type="submit"
+          class="btn-submit"
+          [disabled]="isLoading() || !proveedorForm.valid"
+        >
+          <svg *ngIf="!isLoading()" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+            <polyline points="20 6 9 17 4 12"/>
+          </svg>
+          {{ isLoading() ? 'Procesando...' : (isEditing() ? 'Actualizar Ficha' : 'Guardar Proveedor') }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

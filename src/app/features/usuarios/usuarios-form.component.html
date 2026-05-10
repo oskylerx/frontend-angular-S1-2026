@@ -1,0 +1,164 @@
+<div class="form-container">
+  <header class="form-header">
+    <a routerLink="/usuarios" class="btn-back">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/>
+      </svg>
+      Regresar al listado
+    </a>
+    <div class="header-title">
+      <h1>{{ isEditing() ? 'Actualizar Usuario' : 'Registrar Colaborador' }}</h1>
+      <p>Completa el formulario para {{ isEditing() ? 'modificar' : 'crear' }} una identidad en el sistema.</p>
+    </div>
+  </header>
+
+  <app-alert
+    [type]="alertType()"
+    [title]="alertTitle()"
+    [message]="alertMessage()"
+    [visible]="showAlert()"
+    [closable]="true"
+    (closed)="showAlert.set(false)"
+  ></app-alert>
+
+  <div class="form-card">
+    <form [formGroup]="usuarioForm" (ngSubmit)="onSubmit()">
+      <div class="section-label">Información de Cuenta</div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Código Identificador</label>
+          <div class="input-with-magic">
+            <div class="input-wrapper">
+              <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+              </svg>
+              <input
+                type="text"
+                formControlName="codigo"
+                placeholder="Ej: ADM-102"
+                class="form-control"
+                [class.error]="isFieldInvalid('codigo')"
+                [readonly]="isEditing()"
+              />
+            </div>
+            <button 
+              type="button" 
+              *ngIf="!isEditing()"
+              (click)="generateMagicCode()" 
+              class="btn-magic" 
+              title="Generar código sugerido"
+            >
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M15 14l-2 2-3-3-3 3"/>
+                <path d="M21 21l-6-6"/>
+                <path d="M12 3v12"/>
+                <path d="M8 7l4-4 4 4"/>
+              </svg>
+              Auto-Generar
+            </button>
+          </div>
+          <span class="error-msg" *ngIf="isFieldInvalid('codigo')">Código obligatorio</span>
+        </div>
+
+        <div class="form-group">
+          <label>Correo Institucional</label>
+          <div class="input-wrapper">
+            <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/>
+            </svg>
+            <input
+              type="email"
+              formControlName="email"
+              placeholder="correo@empresa.com"
+              class="form-control"
+              [class.error]="isFieldInvalid('email')"
+            />
+          </div>
+          <span class="error-msg" *ngIf="isFieldInvalid('email')">Email inválido</span>
+        </div>
+      </div>
+
+      <div class="section-label mt-2">Datos Personales</div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Nombre Completo</label>
+          <input
+            type="text"
+            formControlName="nombre"
+            placeholder="Nombres y Apellidos"
+            class="form-control"
+            [class.error]="isFieldInvalid('nombre')"
+          />
+        </div>
+
+        <div class="form-group">
+          <label>Cédula de Identidad</label>
+          <input
+            type="text"
+            formControlName="ci"
+            placeholder="Número de CI"
+            class="form-control"
+            [class.error]="isFieldInvalid('ci')"
+          />
+        </div>
+
+        <div class="form-group">
+          <label>Rol Asignado</label>
+          <select
+            formControlName="rol"
+            class="form-control select-control"
+            [class.error]="isFieldInvalid('rol')"
+          >
+            <option value="">-- Seleccionar Nivel --</option>
+            <option value="admin">Administrador (Control Total)</option>
+            <option value="supervisor">Supervisor (Auditoría)</option>
+            <option value="cajero">Cajero (Operativo)</option>
+          </select>
+        </div>
+
+        <div class="form-group flex-row">
+          <label class="toggle">
+            <input type="checkbox" formControlName="estado" />
+            <span class="toggle-slider"></span>
+            <span class="toggle-label">{{ usuarioForm.get('estado')?.value ? 'Estado Activo' : 'Estado Suspendido' }}</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="section-label mt-2">Seguridad</div>
+      <div class="form-group">
+        <label>{{ isEditing() ? 'Nueva Contraseña (opcional)' : 'Contraseña Inicial' }}</label>
+        <div class="input-wrapper">
+          <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+          </svg>
+          <input
+            type="password"
+            formControlName="contrasena"
+            placeholder="Mínimo 8 caracteres"
+            class="form-control"
+            [class.error]="isFieldInvalid('contrasena')"
+          />
+        </div>
+        <app-password-checklist 
+          *ngIf="usuarioForm.get('contrasena')?.value"
+          [rules]="passwordRules"
+        ></app-password-checklist>
+      </div>
+
+      <div class="form-footer">
+        <button type="button" class="btn-cancel" (click)="cancel()">Descartar</button>
+        <button
+          type="submit"
+          class="btn-submit"
+          [disabled]="isLoading() || !usuarioForm.valid"
+        >
+          <svg *ngIf="!isLoading()" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+            <polyline points="20 6 9 17 4 12"/>
+          </svg>
+          {{ isLoading() ? 'Procesando...' : (isEditing() ? 'Guardar Cambios' : 'Crear Usuario') }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

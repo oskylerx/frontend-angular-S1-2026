@@ -1,0 +1,106 @@
+<div class="dashboard-wrapper">
+  <header class="dashboard-header">
+    <div class="greeting-section">
+      <span class="day-moment">{{ greeting() }}</span>
+      <h1>Bienvenido de nuevo, {{ firstName() }}</h1>
+      <p class="role-caption">Panel de control del sistema ({{ (usuario()?.rol || '') | uppercase }})</p>
+    </div>
+    <div class="header-status">
+      <div class="status-indicator">
+        <span class="dot active"></span>
+        Sistema en Línea
+      </div>
+    </div>
+  </header>
+
+  <div class="metrics-grid">
+    <div class="metric-card">
+      <div class="metric-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+        </svg>
+      </div>
+      <div class="metric-info">
+        <label>Cuenta de Perfil</label>
+        <span class="value">{{ usuario()?.email || 'No disponible' }}</span>
+      </div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+        </svg>
+      </div>
+      <div class="metric-info">
+        <label>Nivel de Acceso</label>
+        <span class="value">{{ (usuario()?.rol || '') | titlecase }}</span>
+      </div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+        </svg>
+      </div>
+      <div class="metric-info">
+        <label>Módulos Habilitados</label>
+        <span class="value">{{ permisos().length }} activos</span>
+      </div>
+    </div>
+  </div>
+
+  <section class="quick-nav-section">
+    <div class="section-header">
+      <h2>Accesos Directos</h2>
+      <div class="line"></div>
+    </div>
+
+    <div class="navigation-grid">
+      <a 
+        *ngFor="let item of visibleQuickAccess()"
+        [routerLink]="item.route"
+        class="nav-card"
+        [style.--card-accent]="item.color"
+      >
+        <div class="nav-icon-wrapper">
+          <span class="nav-icon-svg" [innerHTML]="item.icon"></span>
+        </div>
+        <div class="nav-info">
+          <h3>{{ item.title }}</h3>
+          <p>{{ item.description }}</p>
+        </div>
+        <div class="nav-action">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <footer class="system-summary">
+    <div class="summary-card">
+      <h3>Arquitectura de Producción</h3>
+      <div class="feature-list">
+        <div class="feature-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="f-icon">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          </svg>
+          JWT Security
+        </div>
+        <div class="feature-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="f-icon">
+            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+          </svg>
+          Real-time Audit
+        </div>
+        <div class="feature-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="f-icon">
+            <rect x="2" y="2" width="20" height="8" rx="2" ry="2"/><rect x="2" y="14" width="20" height="8" rx="2" ry="2"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/>
+          </svg>
+          Node.js Engine
+        </div>
+      </div>
+    </div>
+  </footer>
+</div>

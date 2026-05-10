@@ -1,0 +1,31 @@
+<nav class="system-navbar" [class.collapsed]="isCollapsed()">
+  <div class="navbar-inner">
+    <div class="navbar-left">
+      <button class="btn-toggle-main" (click)="toggleSidebar()" title="Alternar Menú">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/>
+        </svg>
+      </button>
+    </div>
+    
+    <div class="navbar-right" *ngIf="usuario()">
+      <div class="user-profile-box">
+        <div class="profile-info">
+          <span class="p-name">{{ usuario()?.nombre }}</span>
+          <span class="p-role">{{ usuario()?.rol | titlecase }}</span>
+        </div>
+        <div class="profile-avatar">
+          {{ usuario()?.nombre?.charAt(0) }}
+        </div>
+      </div>
+
+      <div class="nav-divider"></div>
+
+      <button class="btn-logout" (click)="logout()" title="Finalizar Sesión">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+</nav>

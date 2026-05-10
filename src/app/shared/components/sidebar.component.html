@@ -1,0 +1,45 @@
+<aside class="sidebar-container" [class.collapsed]="isCollapsed()">
+  <div class="sidebar-header">
+    <div class="brand">
+      <div class="logo-box">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <path d="M3 3h18v18H3zM3 9h18M9 3v18"/>
+        </svg>
+      </div>
+      <span class="brand-text" *ngIf="!isCollapsed()">MarketOS</span>
+    </div>
+    <button class="btn-toggle" (click)="toggleSidebar()" [title]="isCollapsed() ? 'Expandir' : 'Contraer'">
+      <svg *ngIf="!isCollapsed()" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <polyline points="15 18 9 12 15 6"/>
+      </svg>
+      <svg *ngIf="isCollapsed()" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <polyline points="9 18 15 12 9 6"/>
+      </svg>
+    </button>
+  </div>
+
+  <div class="nav-content">
+    <div class="nav-section">
+      <span class="section-title" *ngIf="!isCollapsed()">Navegación</span>
+      <nav class="nav-list">
+        <a 
+          *ngFor="let item of visibleMenuItems()"
+          [routerLink]="item.route"
+          routerLinkActive="active"
+          class="nav-link"
+          [title]="isCollapsed() ? item.label : ''"
+        >
+          <div class="icon-wrapper" [innerHTML]="item.icon"></div>
+          <span class="link-label" *ngIf="!isCollapsed()">{{ item.label }}</span>
+          <div class="active-indicator" [class.mini]="isCollapsed()"></div>
+        </a>
+      </nav>
+    </div>
+  </div>
+
+  <div class="sidebar-footer" *ngIf="!isCollapsed()">
+    <div class="version-tag">
+      Enterprise v2.1
+    </div>
+  </div>
+</aside>

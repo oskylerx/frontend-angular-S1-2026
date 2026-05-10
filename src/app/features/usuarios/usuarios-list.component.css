@@ -1,0 +1,39 @@
+:host {
+  display: block;
+}
+
+/* Local UI tweaks */
+.results-meta {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-sec);
+  padding: 0.5rem 1rem;
+  background: #f1f5f9;
+  border-radius: 8px;
+}
+
+/* Loading Bar Animation */
+.loading-bar { height: 3px; background: #f1f5f9; width: 100%; overflow: hidden; }
+.progress { height: 100%; background: var(--primary); width: 30%; animation: loading 1.5s infinite ease-in-out; }
+@keyframes loading { 0% { transform: translateX(-100%); width: 30%; } 50% { width: 50%; } 100% { transform: translateX(333%); width: 30%; } }
+
+/* User Specific Layout */
+.user-id { font-family: monospace; font-weight: 700; color: var(--text-sec); font-size: 0.9rem; }
+.name-cell { display: flex; align-items: center; gap: 0.75rem; }
+.main-name { font-weight: 700; color: var(--text-pri); }
+.admin-flag { font-size: 0.65rem; font-weight: 800; text-transform: uppercase; background: #fef2f2; color: #ef4444; padding: 0.2rem 0.5rem; border-radius: 4px; }
+.email-text { color: var(--text-sec); font-size: 0.9rem; }
+
+.status-indicator { display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; font-weight: 600; color: var(--text-sec); }
+.point { width: 8px; height: 8px; border-radius: 50%; opacity: 0.8; }
+.point.online { background: #10b981; box-shadow: 0 0 8px #10b981; }
+.point.offline { background: #94a3b8; }
+
+.action-group { display: flex; gap: 0.5rem; justify-content: flex-end; }
+
+/* Empty View */
+.empty-view { padding: 6rem 2rem; text-align: center; }
+.empty-icon-box { color: #d1d5db; margin-bottom: 2rem; }
+.empty-icon-box svg { width: 64px; height: 64px; }
+.empty-view h3 { font-size: 1.25rem; font-weight: 800; color: var(--text-pri); margin-bottom: 0.5rem; }
+.empty-view p { color: var(--text-sec); }
