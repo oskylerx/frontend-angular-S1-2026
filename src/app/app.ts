@@ -14,8 +14,8 @@ export class App implements OnInit {
   constructor(private http: HttpClient) {}
 
   ngOnInit() {
-    // Prueba rápida de conexión al backend
-    this.http.get(`${environment.apiUrl}/api/test-db`).subscribe({
+    // Prueba corregida (ya no se duplica el /api)
+    this.http.get(`${environment.apiUrl}/test-db`).subscribe({
       next: (res) => {
         console.log('✅ FRONTEND CONECTADO AL BACKEND EXITOSAMENTE:', res);
         alert('✅ Conexión con el backend en Render exitosa. Revisa la consola (F12).');
