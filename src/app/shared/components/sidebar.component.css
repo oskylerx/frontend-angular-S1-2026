@@ -38,6 +38,11 @@
   margin-bottom: 1.5rem;
 }
 
+.collapsed .sidebar-header {
+  padding: 0;
+  justify-content: center;
+}
+
 .brand {
   display: flex;
   align-items: center;
@@ -53,6 +58,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
 }
 
 .brand-text {
@@ -60,12 +66,18 @@
   font-weight: 800;
   color: var(--text-pri);
   letter-spacing: -0.02em;
+  white-space: nowrap;
 }
 
 .nav-content {
   flex: 1;
   padding: 0 1rem;
   overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.collapsed .nav-content {
+  padding: 0 0.75rem;
 }
 
 .nav-link {
@@ -79,6 +91,13 @@
   border-radius: 14px;
   transition: all 0.2s;
   margin-bottom: 0.25rem;
+  white-space: nowrap;
+}
+
+.collapsed .nav-link {
+  padding: 0.85rem 0;
+  justify-content: center;
+  gap: 0;
 }
 
 .nav-link.active {
@@ -86,21 +105,46 @@
   color: var(--primary);
 }
 
+.icon-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+}
+
+.icon-wrapper ::ng-deep svg {
+  width: 22px;
+  height: 22px;
+}
+
+.btn-toggle {
+  background: #f8fafc;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--text-sec);
+}
+
+.collapsed .btn-toggle {
+  display: none; /* Opcional: ocultar o mover si estorba en colapso */
+}
+
 /* RESPONSIVE LOGIC */
 
 @media (max-width: 1024px) {
   .sidebar-container {
-    transform: translateX(-100%); /* Oculto por defecto en móvil/tablet */
-    width: var(--sidebar-w) !important; /* Siempre ancho completo si se abre */
+    transform: translateX(-100%);
+    width: var(--sidebar-w) !important;
     box-shadow: 10px 0 30px rgba(0,0,0,0.1);
   }
 
-  /* Cuando NO está colapsado en móvil, significa que está ABIERTO */
-  :host-context(.app-layout:not(.collapsed)) .sidebar-container {
-    transform: translateX(0);
-  }
-  
-  /* Alternativa: Si el UIService controla la clase directamente */
   .sidebar-container:not(.collapsed) {
     transform: translateX(0);
   }
@@ -108,20 +152,16 @@
   .sidebar-container.collapsed {
     transform: translateX(-100%);
   }
-  
-  .btn-toggle {
-    display: none; /* Ocultamos el botón interno en móvil */
-  }
 }
 
-/* Desktop behaviors */
+/* Desktop behavior logic for animations */
 @media (min-width: 1025px) {
-  .sidebar-container.collapsed .brand-text,
-  .sidebar-container.collapsed .link-label {
-    display: none;
-  }
-  
-  .sidebar-container.collapsed {
-    width: var(--sidebar-w-collapsed);
+  .sidebar-container.collapsed .btn-toggle {
+    display: flex;
+    position: absolute;
+    right: -16px;
+    top: 24px;
+    background: white;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
   }
 }
