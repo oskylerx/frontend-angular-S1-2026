@@ -21,7 +21,7 @@
   left: 0;
   top: 0;
   z-index: 1000;
-  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), width 0.3s ease;
 }
 
 .sidebar-container.collapsed {
@@ -36,11 +36,6 @@
   justify-content: space-between;
   border-bottom: 1px solid var(--border);
   margin-bottom: 1.5rem;
-}
-
-.collapsed .sidebar-header {
-  padding: 0;
-  justify-content: center;
 }
 
 .brand {
@@ -58,78 +53,19 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-shrink: 0;
 }
-.logo-box svg { width: 20px; height: 20px; }
 
 .brand-text {
   font-size: 1.1rem;
   font-weight: 800;
   color: var(--text-pri);
   letter-spacing: -0.02em;
-  white-space: nowrap;
 }
-
-.btn-toggle {
-  width: 32px;
-  height: 32px;
-  background: #f8fafc;
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  color: var(--text-sec);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.btn-toggle:hover {
-  background: white;
-  color: var(--primary);
-  border-color: var(--primary);
-}
-
-.collapsed .btn-toggle {
-  position: absolute;
-  right: -16px;
-  top: 24px;
-  background: white;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-  z-index: 1001;
-}
-
-.btn-toggle svg { width: 16px; height: 16px; }
 
 .nav-content {
   flex: 1;
   padding: 0 1rem;
-  overflow-x: hidden;
-}
-
-.collapsed .nav-content {
-  padding: 0 0.75rem;
-}
-
-.nav-section {
-  display: flex;
-  flex-direction: column;
-}
-
-.section-title {
-  padding: 0 0.75rem;
-  font-size: 0.65rem;
-  font-weight: 800;
-  text-transform: uppercase;
-  color: #94a3b8;
-  letter-spacing: 0.1em;
-  margin-bottom: 0.75rem;
-}
-
-.nav-list {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
+  overflow-y: auto;
 }
 
 .nav-link {
@@ -140,22 +76,9 @@
   color: var(--text-sec);
   text-decoration: none;
   font-weight: 600;
-  font-size: 0.9rem;
   border-radius: 14px;
   transition: all 0.2s;
-  position: relative;
-  white-space: nowrap;
-}
-
-.collapsed .nav-link {
-  justify-content: center;
-  padding: 1rem;
-  height: 56px;
-}
-
-.nav-link:hover {
-  background: #f8fafc;
-  color: var(--text-pri);
+  margin-bottom: 0.25rem;
 }
 
 .nav-link.active {
@@ -163,68 +86,42 @@
   color: var(--primary);
 }
 
-.icon-wrapper {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
+/* RESPONSIVE LOGIC */
 
-.icon-wrapper ::ng-deep svg {
-  width: 22px;
-  height: 22px;
-}
-
-.link-label {
-  transition: opacity 0.2s;
-}
-
-.active-indicator {
-  position: absolute;
-  left: -1rem;
-  width: 4px;
-  height: 24px;
-  background: var(--primary);
-  border-radius: 0 4px 4px 0;
-  opacity: 0;
-  transition: opacity 0.2s;
-}
-
-.active-indicator.mini {
-  left: 4px;
-}
-
-.nav-link.active .active-indicator {
-  opacity: 1;
-}
-
-.sidebar-footer {
-  padding: 1.5rem;
-  border-top: 1px solid var(--border);
-}
-
-.version-tag {
-  font-size: 0.7rem;
-  font-weight: 700;
-  color: #cbd5e1;
-  text-transform: uppercase;
-  text-align: center;
-}
-
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .sidebar-container {
-    width: 0;
-    overflow: hidden;
-    border-right: none;
+    transform: translateX(-100%); /* Oculto por defecto en móvil/tablet */
+    width: var(--sidebar-w) !important; /* Siempre ancho completo si se abre */
+    box-shadow: 10px 0 30px rgba(0,0,0,0.1);
+  }
+
+  /* Cuando NO está colapsado en móvil, significa que está ABIERTO */
+  :host-context(.app-layout:not(.collapsed)) .sidebar-container {
+    transform: translateX(0);
   }
   
-  .sidebar-container.active-mobile {
-    width: 260px;
-    border-right: 1px solid var(--border);
+  /* Alternativa: Si el UIService controla la clase directamente */
+  .sidebar-container:not(.collapsed) {
+    transform: translateX(0);
   }
 
-  /* Opción fallback para móvil si no implementamos menú hamburguesa aún */
-  .sidebar-container {
+  .sidebar-container.collapsed {
+    transform: translateX(-100%);
+  }
+  
+  .btn-toggle {
+    display: none; /* Ocultamos el botón interno en móvil */
+  }
+}
+
+/* Desktop behaviors */
+@media (min-width: 1025px) {
+  .sidebar-container.collapsed .brand-text,
+  .sidebar-container.collapsed .link-label {
     display: none;
+  }
+  
+  .sidebar-container.collapsed {
+    width: var(--sidebar-w-collapsed);
   }
 }

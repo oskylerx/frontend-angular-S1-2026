@@ -1,0 +1,92 @@
+<div class="almacenes-list-container">
+  <header class="page-header">
+    <div class="title-section">
+      <h1>Gestión de Almacenes</h1>
+      <p>Control de inventario, ubicaciones y zonas de almacenamiento</p>
+    </div>
+    <button class="btn-primary" routerLink="nuevo">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line>
+      </svg>
+      Nuevo Almacén
+    </button>
+  </header>
+
+  <app-alert
+    [visible]="showAlert()"
+    [type]="alertType()"
+    [title]="alertTitle()"
+    [message]="alertMessage()"
+    (closed)="showAlert.set(false)"
+  ></app-alert>
+
+  <div class="content-card">
+    <div class="table-actions">
+      <div class="search-box">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+        <input 
+          type="text" 
+          placeholder="Buscar almacén..." 
+          [(ngModel)]="searchText"
+          (keyup.enter)="onSearch()"
+        />
+      </div>
+      <button class="btn-secondary" (click)="onSearch()">Buscar</button>
+    </div>
+
+    <div class="table-responsive">
+      <div *ngIf="isLoading()" class="loading-overlay">
+        <div class="spinner"></div>
+      </div>
+
+      <table class="premium-table">
+        <thead>
+          <tr>
+            <th>Código</th>
+            <th>Nombre</th>
+            <th>Dirección</th>
+            <th>Capacidad</th>
+            <th>Estado</th>
+            <th class="text-center">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let a of almacenes()">
+            <td><span class="code-badge">{{ a.codigo }}</span></td>
+            <td><strong>{{ a.nombre }}</strong></td>
+            <td>{{ a.direccion }}</td>
+            <td>
+              <div class="capacity-info">
+                <div class="progress-bar">
+                  <div class="progress" [style.width.%]="(a.capacidad_actual / a.capacidad_total) * 100"></div>
+                </div>
+                <span>{{ a.capacidad_actual }} / {{ a.capacidad_total }}</span>
+              </div>
+            </td>
+            <td>
+              <span [class]="'status-badge ' + (a.estado ? 'active' : 'inactive')" (click)="toggleEstado(a)">
+                {{ a.estado ? 'Activo' : 'Inactivo' }}
+              </span>
+            </td>
+            <td class="actions-cell">
+              <button class="btn-icon" [routerLink]="['editar', a.codigo]" title="Editar">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                  <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                </svg>
+              </button>
+              <button class="btn-icon delete" (click)="deleteAlmacen(a.codigo)" title="Eliminar">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="3 6 5 6 21 6"></polyline>
+                  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                </svg>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

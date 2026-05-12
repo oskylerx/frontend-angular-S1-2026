@@ -96,3 +96,68 @@ tr.row-login:hover td { background: #fffbeb !important; }
 .empty-notif { padding: 5rem 2rem; text-align: center; }
 .empty-icon { color: var(--border); margin-bottom: 1.5rem; }
 .empty-icon svg { width: 48px; height: 48px; }
+
+/* Control Buttons */
+.btn-reset, .btn-export {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1rem;
+  border-radius: 10px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  border: none;
+  height: 42px;
+  align-self: flex-end;
+}
+
+.btn-reset {
+  background: #f1f5f9;
+  color: #64748b;
+  width: 42px; /* Square for reset icon */
+  padding: 0;
+}
+
+.btn-reset:hover {
+  background: #e2e8f0;
+  color: #0f172a;
+  transform: rotate(-45deg);
+}
+
+.btn-export {
+  background: #10b981;
+  color: white;
+  min-width: 120px;
+  box-shadow: 0 4px 6px -1px rgba(16, 185, 129, 0.1), 0 2px 4px -1px rgba(16, 185, 129, 0.06);
+}
+
+.btn-export:hover:not(:disabled) {
+  background: #059669;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 15px -3px rgba(16, 185, 129, 0.2);
+}
+
+.btn-export:disabled {
+  background: #94a3b8;
+  opacity: 0.6;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.btn-export svg, .btn-reset svg {
+  width: 18px;
+  height: 18px;
+}
+
+@media (max-width: 1024px) {
+  .filter-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .filter-controls {
+    justify-content: flex-start;
+  }
+}

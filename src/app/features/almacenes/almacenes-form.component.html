@@ -1,0 +1,79 @@
+<div class="form-container">
+  <header class="page-header">
+    <div class="title-section">
+      <button class="btn-back" routerLink="/almacenes">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+      </button>
+      <h1>{{ isEditMode() ? 'Editar' : 'Nuevo' }} Almacén</h1>
+    </div>
+  </header>
+
+  <app-alert
+    [visible]="showAlert()"
+    [type]="alertType()"
+    [title]="alertTitle()"
+    [message]="alertMessage()"
+    (closed)="showAlert.set(false)"
+  ></app-alert>
+
+  <form [formGroup]="almacenForm" (ngSubmit)="onSubmit()" class="premium-form">
+    <div class="form-card">
+      <div class="card-header">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+        </svg>
+        <h3>Información General</h3>
+      </div>
+      
+      <div class="grid-form">
+        <div class="form-group">
+          <label>Código del Almacén</label>
+          <input type="text" formControlName="codigo" placeholder="Ej: ALM-01" />
+          <span class="error-msg" *ngIf="almacenForm.get('codigo')?.touched && almacenForm.get('codigo')?.errors?.['required']">
+            El código es obligatorio
+          </span>
+        </div>
+
+        <div class="form-group">
+          <label>Nombre del Almacén</label>
+          <input type="text" formControlName="nombre" placeholder="Nombre descriptivo" />
+        </div>
+
+        <div class="form-group full-width">
+          <label>Dirección Física</label>
+          <input type="text" formControlName="direccion" placeholder="Calle, Nro, Zona" />
+        </div>
+
+        <div class="form-group">
+          <label>Capacidad Total (unidades)</label>
+          <input type="number" formControlName="capacidad_total" />
+        </div>
+
+        <div class="form-group">
+          <label>Capacidad Actual (unidades)</label>
+          <input type="number" formControlName="capacidad_actual" />
+          <span class="error-msg" *ngIf="almacenForm.errors?.['capacityExceeded']">
+            No puede ser mayor a la total
+          </span>
+        </div>
+
+        <div class="form-group">
+          <label>Estado Inicial</label>
+          <select formControlName="estado">
+            <option [ngValue]="true">Activo</option>
+            <option [ngValue]="false">Inactivo</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <button type="button" class="btn-cancel" routerLink="/almacenes">Cancelar</button>
+      <button type="submit" class="btn-save" [disabled]="isSaving()">
+        {{ isSaving() ? 'Guardando...' : 'Guardar Almacén' }}
+      </button>
+    </div>
+  </form>
+</div>

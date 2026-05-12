@@ -32,4 +32,11 @@ export class BitacoraService {
   getByModulo(modulo: string): Observable<ApiResponse<BitacoraRegistro>> {
     return this.http.get<ApiResponse<BitacoraRegistro>>(`${this.apiUrl}/modulo/${modulo}`);
   }
+
+  /**
+   * Exportar bitácora por correo electrónico
+   */
+  exportByEmail(filters: any): Observable<ApiResponse<any>> {
+    return this.http.post<ApiResponse<any>>(`${this.apiUrl}/export`, { filters });
+  }
 }

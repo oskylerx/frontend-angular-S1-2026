@@ -212,6 +212,35 @@ export class BitacoraComponent implements OnInit, OnDestroy {
     this.setFilter('all');
   }
 
+  exportAudit(): void {
+    const filters = {
+      codigoUsuario: this.selectedUsuario(),
+      startDate: this.startDate(),
+      endDate: this.endDate()
+    };
+
+    this.isLoading.set(true);
+    this.bitacoraService.exportByEmail(filters)
+      .pipe(
+        finalize(() => this.isLoading.set(false)),
+        takeUntil(this.destroy$)
+      )
+      .subscribe({
+        next: (response) => {
+          this.alertType.set('success');
+          this.alertTitle.set('¡Envío Exitoso!');
+          this.alertMessage.set(response.mensaje || 'El reporte ha sido enviado satisfactoriamente a su buzón de correo.');
+          this.showAlert.set(true);
+        },
+        error: (err) => {
+          this.alertType.set('error');
+          this.alertTitle.set('Error al Exportar');
+          this.alertMessage.set(err?.error?.mensaje || 'No pudimos enviar el reporte en este momento. Intente más tarde.');
+          this.showAlert.set(true);
+        }
+      });
+  }
+
   trackByUsuario(_: number, usuario: Usuario): string {
     return usuario.codigo;
   }

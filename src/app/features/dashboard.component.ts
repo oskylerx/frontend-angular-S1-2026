@@ -71,6 +71,14 @@ export class DashboardComponent implements OnInit, OnDestroy {
       route: '/bitacora',
       color: '#f59e0b',
       permission: 'bitacora.ver'
+    },
+    {
+      title: 'Almacenes',
+      description: 'Inventario y almacenamiento',
+      icon: this.sanitizer.bypassSecurityTrustHtml('<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>'),
+      route: '/almacenes',
+      color: '#3b82f6',
+      permission: 'almacen.ver'
     }
   ];
 

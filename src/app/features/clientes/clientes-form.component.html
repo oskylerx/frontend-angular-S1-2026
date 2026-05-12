@@ -1,0 +1,133 @@
+<div class="form-container">
+  <header class="page-header">
+    <div class="title-section">
+      <button class="btn-back" routerLink="/clientes">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+      </button>
+      <h1>{{ isEditMode() ? 'Editar' : 'Nuevo' }} Cliente</h1>
+    </div>
+  </header>
+
+  <app-alert
+    [visible]="showAlert()"
+    [type]="alertType()"
+    [title]="alertTitle()"
+    [message]="alertMessage()"
+    (closed)="showAlert.set(false)"
+  ></app-alert>
+
+  <form [formGroup]="clienteForm" (ngSubmit)="onSubmit()" class="premium-form">
+    <!-- Datos Básicos -->
+    <div class="form-card">
+      <div class="card-header">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle>
+        </svg>
+        <h3>Datos Básicos</h3>
+      </div>
+      
+      <div class="grid-form">
+        <div class="form-group">
+          <label>Cédula de Identidad (CI/NIT)</label>
+          <input type="text" formControlName="ci" placeholder="Ej: 1234567 LP" />
+          <span class="error-msg" *ngIf="clienteForm.get('ci')?.touched && clienteForm.get('ci')?.errors?.['required']">
+            El CI es obligatorio
+          </span>
+        </div>
+
+        <div class="form-group">
+          <label>Nombre / Razón Social</label>
+          <input type="text" formControlName="nombre" placeholder="Nombre completo" />
+          <span class="error-msg" *ngIf="clienteForm.get('nombre')?.touched && clienteForm.get('nombre')?.errors?.['required']">
+            El nombre es obligatorio
+          </span>
+        </div>
+
+        <div class="form-group">
+          <label>Correo Electrónico</label>
+          <input type="email" formControlName="correo_electronico" placeholder="correo@ejemplo.com" />
+          <span class="error-msg" *ngIf="clienteForm.get('correo_electronico')?.touched && clienteForm.get('correo_electronico')?.errors?.['email']">
+            Formato de correo inválido
+          </span>
+        </div>
+
+        <div class="form-group">
+          <label>Teléfono</label>
+          <input type="text" formControlName="telefono" placeholder="Ej: 77889900" />
+        </div>
+      </div>
+    </div>
+
+    <!-- Gestión de Direcciones -->
+    <div class="form-card">
+      <div class="card-header">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle>
+        </svg>
+        <h3>Direcciones</h3>
+        <button type="button" class="btn-add" (click)="addDireccion()">
+          + Agregar
+        </button>
+      </div>
+
+      <div formArrayName="direcciones" class="nested-items">
+        <div *ngFor="let dir of direcciones.controls; let i = index" [formGroupName]="i" class="nested-item-row">
+          <div class="grid-3">
+            <div class="form-group">
+              <input type="text" formControlName="direccion" placeholder="Dirección detallada" />
+            </div>
+            <div class="form-group">
+              <input type="text" formControlName="ciudad" placeholder="Ciudad" />
+            </div>
+            <div class="form-group check-group">
+              <input type="checkbox" formControlName="es_principal" [id]="'p-' + i" />
+              <label [for]="'p-' + i">Principal</label>
+            </div>
+          </div>
+          <button type="button" class="btn-remove" (click)="removeDireccion(i)">×</button>
+        </div>
+        <p class="empty-msg" *ngIf="direcciones.length === 0">No hay direcciones registradas.</p>
+      </div>
+    </div>
+
+    <!-- Gestión de Contactos -->
+    <div class="form-card">
+      <div class="card-header">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+        </svg>
+        <h3>Contactos</h3>
+        <button type="button" class="btn-add" (click)="addContacto()">
+          + Agregar
+        </button>
+      </div>
+
+      <div formArrayName="contactos" class="nested-items">
+        <div *ngFor="let con of contactos.controls; let i = index" [formGroupName]="i" class="nested-item-row">
+          <div class="grid-3">
+            <div class="form-group">
+              <input type="text" formControlName="nombre" placeholder="Nombre contacto" />
+            </div>
+            <div class="form-group">
+              <input type="text" formControlName="telefono" placeholder="Teléfono" />
+            </div>
+            <div class="form-group">
+              <input type="text" formControlName="cargo" placeholder="Cargo (ej: Gerente)" />
+            </div>
+          </div>
+          <button type="button" class="btn-remove" (click)="removeContacto(i)">×</button>
+        </div>
+        <p class="empty-msg" *ngIf="contactos.length === 0">No hay contactos registrados.</p>
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <button type="button" class="btn-cancel" routerLink="/clientes">Cancelar</button>
+      <button type="submit" class="btn-save" [disabled]="isSaving()">
+        {{ isSaving() ? 'Guardando...' : 'Guardar Cliente' }}
+      </button>
+    </div>
+  </form>
+</div>

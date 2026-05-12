@@ -39,6 +39,57 @@ export interface Proveedor {
   fecha_creacion?: string;
 }
 
+export interface Direccion {
+  id?: number;
+  codigo_cliente?: string;
+  direccion: string;
+  ciudad: string;
+  es_principal: boolean;
+}
+
+export interface Contacto {
+  id?: number;
+  codigo_cliente?: string;
+  nombre: string;
+  telefono: string;
+  cargo: string;
+}
+
+export interface Cliente {
+  id: number;
+  ci: string;
+  nombre: string;
+  correo_electronico: string;
+  telefono: string;
+  direcciones?: Direccion[];
+  contactos?: Contacto[];
+}
+
+export interface Almacen {
+  codigo: string;
+  nombre: string;
+  direccion: string;
+  capacidad_actual: number;
+  capacidad_total: number;
+  estado: boolean;
+  ubicaciones?: Ubicacion[];
+  zonas?: Zona[];
+}
+
+export interface Ubicacion {
+  id?: number;
+  codigo_almacen: string;
+  nombre: string;
+  descripcion?: string;
+}
+
+export interface Zona {
+  id?: number;
+  codigo_almacen: string;
+  nombre: string;
+  capacidad: number;
+}
+
 export interface BitacoraRegistro {
   id?: number;
   codigo_usuario: string;
@@ -58,6 +109,10 @@ export interface ApiResponse<T> {
   usuarios?: T[];
   permisos?: T[];
   proveedores?: T[];
+  clientes?: T[];
+  cliente?: T;
+  almacenes?: T[];
+  almacen?: T;
   registros?: T[];
 }
 
