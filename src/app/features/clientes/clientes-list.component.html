@@ -49,6 +49,7 @@
             <th>CI / NIT</th>
             <th>Correo Electrónico</th>
             <th>Teléfono</th>
+            <th>Tipo</th>
             <th class="text-center">Acciones</th>
           </tr>
         </thead>
@@ -59,6 +60,7 @@
             <td>{{ c.ci }}</td>
             <td>{{ c.correo_electronico }}</td>
             <td>{{ c.telefono }}</td>
+            <td>{{ c.tipo }}</td>
             <td class="actions-cell">
               <button class="btn-icon" [routerLink]="['editar', c.id]" title="Editar">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">

@@ -51,8 +51,10 @@ export class ClientesFormComponent implements OnInit {
       nombre: ['', [Validators.required, Validators.minLength(2)]],
       correo_electronico: ['', [Validators.required, Validators.email]],
       telefono: ['', [Validators.required]],
+      tipo: ['', [Validators.required]],
       direcciones: this.fb.array([]),
-      contactos: this.fb.array([])
+      contactos: this.fb.array([]),
+     
     });
   }
 
@@ -91,7 +93,8 @@ export class ClientesFormComponent implements OnInit {
               ci: cliente.ci,
               nombre: cliente.nombre,
               correo_electronico: cliente.correo_electronico,
-              telefono: cliente.telefono
+              telefono: cliente.telefono,
+              tipo: cliente.tipo
             });
             cliente.direcciones?.forEach(d => this.addDireccion(d));
             cliente.contactos?.forEach(c => this.addContacto(c));

@@ -61,6 +61,7 @@ export interface Cliente {
   nombre: string;
   correo_electronico: string;
   telefono: string;
+  tipo: string;
   direcciones?: Direccion[];
   contactos?: Contacto[];
 }
